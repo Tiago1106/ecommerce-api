@@ -3,48 +3,51 @@ import {
   ConflictException,
   NotFoundException,
 } from '@nestjs/common';
+import { PrismaService } from 'src/prisma/prisma.service'; // ajuste conforme sua estrutura
 import * as bcrypt from 'bcrypt';
-import { v4 as uuidv4 } from 'uuid';
 
-export type UserRole = 'admin' | 'client';
-
-export interface User {
-  id: string;
-  name: string;
-  email: string;
-  password: string;
-  role: UserRole;
+export enum UserRole {
+  ADMIN = 'admin',
+  CLIENT = 'client',
 }
 
 @Injectable()
 export class UsersService {
-  private users: User[] = [];
+  constructor(private prisma: PrismaService) {}
 
-  async create(data: Omit<User, 'id'>): Promise<User> {
-    const { email, password } = data;
+  async create(data: {
+    name: string;
+    email: string;
+    password: string;
+    role: UserRole;
+  }) {
+    const existing = await this.prisma.user.findUnique({
+      where: { email: data.email },
+    });
 
-    const existing = this.users.find((u) => u.email === email);
     if (existing) {
-      throw new ConflictException(`Email ${email} já está em uso`);
+      throw new ConflictException(`Email ${data.email} já está em uso`);
     }
 
-    const hashedPassword = await bcrypt.hash(password, 10);
+    const hashedPassword = await bcrypt.hash(data.password, 10);
 
-    const newUser: User = {
-      id: uuidv4(), // UUID gerado aqui
-      ...data,
-      password: hashedPassword,
-    };
-
-    this.users.push(newUser);
-    return newUser;
+    await this.prisma.user.create({
+      data: {
+        name: data.name,
+        email: data.email,
+        password: hashedPassword,
+        role: data.role,
+      },
+    });
   }
 
-  findOneById(id: string): User {
-    const user = this.users.find((u) => u.id === id);
+  async findOneById(id: string) {
+    const user = await this.prisma.user.findUnique({ where: { id } });
+
     if (!user) {
       throw new NotFoundException(`Usuário com ID ${id} não encontrado`);
     }
+
     return user;
   }
 }

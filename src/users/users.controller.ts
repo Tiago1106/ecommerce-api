@@ -25,11 +25,11 @@ export class UsersController {
     },
   ): Promise<void> {
     await this.usersService.create(body);
-    // Não retorna nada
+    // 201 CREATED sem retorno
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  async findOne(@Param('id') id: string) {
     return this.usersService.findOneById(id);
   }
 }
