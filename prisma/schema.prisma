@@ -20,3 +20,24 @@ enum Role {
   admin
   client
 }
+
+model Category {
+  id        String    @id @default(uuid())
+  name      String
+  isActive  Boolean    @default(true)
+  products  Product[] @relation("ProductCategories")
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+model Product {
+  id            String     @id @default(uuid())
+  name          String
+  description   String?
+  price         Float
+  discountPrice Float?
+  images        String[]
+  categories    Category[] @relation("ProductCategories")
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
