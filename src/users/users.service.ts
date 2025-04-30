@@ -4,7 +4,6 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
-import * as bcrypt from 'bcrypt';
 
 export enum UserRole {
   ADMIN = 'admin',
@@ -29,16 +28,7 @@ export class UsersService {
       throw new ConflictException(`Email ${data.email} já está em uso`);
     }
 
-    const hashedPassword = await bcrypt.hash(data.password, 10);
-
-    await this.prisma.user.create({
-      data: {
-        name: data.name,
-        email: data.email,
-        password: hashedPassword,
-        role: data.role,
-      },
-    });
+    return this.prisma.user.create({ data });
   }
 
   async findOneById(id: string) {
