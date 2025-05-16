@@ -24,6 +24,7 @@ enum Role {
 model Category {
   id        String    @id @default(uuid())
   name      String
+  image     String
   isActive  Boolean    @default(true)
   products  Product[] @relation("ProductCategories")
   createdAt DateTime  @default(now())
@@ -36,6 +37,7 @@ model Product {
   description   String?
   price         Float
   discountPrice Float?
+  quantity      Int
   images        String[]
   categories    Category[] @relation("ProductCategories")
   createdAt     DateTime  @default(now())

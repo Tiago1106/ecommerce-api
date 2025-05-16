@@ -1,6 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import * as cors from 'cors';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -11,9 +12,17 @@ async function bootstrap() {
     .setVersion('1.0')
     .build();
 
+  app.use(
+    cors({
+      origin: 'http://localhost:3000', // Substitua pela porta correta se necessário
+      methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+      credentials: true,
+    }),
+  );
+
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('docs', app, document); // acessível em /docs
 
-  await app.listen(3000); // A aplicação está rodando na porta 3000
+  await app.listen(3002); // A aplicação está rodando na porta 3000
 }
 bootstrap();

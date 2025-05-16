@@ -29,6 +29,10 @@ export class CreateProductDto {
   @IsNumber()
   discountPrice?: number;
 
+  @ApiProperty({ description: 'Quantidade do produto' })
+  @IsNumber()
+  quantity!: number;
+
   @ApiProperty({ description: 'Imagens do produto' })
   @IsArray()
   @IsUrl({}, { each: true })
@@ -37,7 +41,7 @@ export class CreateProductDto {
   @ApiProperty({ description: 'IDs das categorias do produto' })
   @IsArray()
   @IsUUID('4', { each: true })
-  categoryIds!: string[];
+  categoryIds?: string[];
 
   @IsOptional()
   @IsDate()

@@ -6,4 +6,8 @@ export class CreateCategoryDto {
   @ApiProperty({ description: 'Nome da categoria' })
   @IsString()
   name!: string; // Nome da categoria
+
+  @ApiProperty({ description: 'Imagem da categoria' })
+  @IsString()
+  image!: string;
 }

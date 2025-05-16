@@ -30,6 +30,11 @@ export class UpdateProductDto {
   @IsNumber()
   discountPrice?: number;
 
+  @ApiProperty({ description: 'Quantidade do produto' })
+  @IsOptional()
+  @IsNumber()
+  quantity?: number;
+
   @ApiProperty({ description: 'Imagens do produto' })
   @IsOptional()
   @IsArray()
