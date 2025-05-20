@@ -14,6 +14,7 @@ async function bootstrap() {
 
   app.use(
     cors({
+      // origin: 'http://localhost:3002', // Substitua pela porta correta se necessário
       origin: 'http://localhost:3000', // Substitua pela porta correta se necessário
       methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
       credentials: true,
