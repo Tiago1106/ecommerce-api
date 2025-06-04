@@ -6,10 +6,13 @@ import * as cors from 'cors';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
+  app.setGlobalPrefix('api/v1');
+
   const config = new DocumentBuilder()
     .setTitle('API Produtos')
     .setDescription('Documentação da API de produtos e categorias')
     .setVersion('1.0')
+    .addServer('/api/v1')
     .build();
 
   app.use(
