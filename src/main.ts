@@ -24,7 +24,7 @@ async function bootstrap() {
   );
 
   const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('docs', app, document); // acessível em /docs
+  SwaggerModule.setup('api/docs', app, document); // acessível em /docs
 
   const port = process.env.PORT || 3002;
 
